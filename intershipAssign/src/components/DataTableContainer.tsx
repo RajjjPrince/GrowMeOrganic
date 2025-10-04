@@ -3,26 +3,26 @@
   //GitHub:
 
 
-import { useState, useEffect } from "react";
-import { DataTable } from "primereact/datatable";
-import { Column } from "primereact/column";
+import { useState, useEffect } from "react"
+import { DataTable } from "primereact/datatable"
+import { Column } from "primereact/column"
 
 // Types ...
 interface Artwork {
-  id: number;
-  title: string;
-  artist_display: string;
-  image_id: string | null;
+  id: number
+  title: string
+  artist_display: string
+  image_id: string | null
 }
 
 export default function ArtworksTable() {
   //  State variables ...
   const [artworks, setArtworks] = useState<Artwork[]>([]);
   const [selectedArtworks, setSelectedArtworks] = useState<Artwork[]>([]);
-  const [totalRecords, setTotalRecords] = useState(0);
+  const [totalRecords, setTotalRecords] = useState(0)
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState("");
-  const [, setSelectAll] = useState(false);
+  const [error, setError] = useState("")
+  const [, setSelectAll] = useState(false)
 
   const [lazyState, setLazyState] = useState({
     first: 0,
@@ -46,15 +46,15 @@ export default function ArtworksTable() {
       );
 
       if (!response.ok) {
-        throw new Error(`Failed to fetch artworks: ${response.statusText}`);
+        throw new Error(`Failed to fetch artworks: ${response.statusText}`)
       }
 
       const data = await response.json();
       setArtworks(data.data);
-      setTotalRecords(data.pagination.total);
+      setTotalRecords(data.pagination.total)
     } catch (err) {
-      console.error("Error fetching artworks:", err);
-      setError("Unable to load artworks. Please try again later.");
+      console.error("Error fetching artworks:", err)
+      setError("Unable to load artworks. Please try again later.")
     } finally {
       setLoading(false);
     }
@@ -65,7 +65,7 @@ export default function ArtworksTable() {
     setLoading(true);
     const timeout = setTimeout(() => {
       const page = lazyState.first / lazyState.rows + 1;
-      fetchArtworks(page, lazyState.rows);
+      fetchArtworks(page, lazyState.rows)
     }, 400); // delay to prevent too frequent API calls
 
     return () => clearTimeout(timeout);
